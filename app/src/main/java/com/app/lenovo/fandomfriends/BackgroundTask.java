@@ -34,7 +34,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        String reg_url = "http://203.124.114.1/Kryptex5.0/signup.php";
+        String reg_url = "http://almat.almafiesta.com/Kryptex5.0/Androidlogin.php";
         String login_url = "http://192.168.0.10/webapp/login.php";
         String method = params [0];
         if (method.equals("register") ){
@@ -43,6 +43,9 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
             String longi = params [3];
             String f1 = params [4];
             String f2 = params [5];
+            String f3=params[6];
+            String f4=params[7];
+            String f5=params[8];
             try {
                 URL url = new URL(reg_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
@@ -55,7 +58,10 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("lati", "UTF-8") + "=" + URLEncoder.encode(lati, "UTF-8") + "&" +
                         URLEncoder.encode("longi", "UTF-8") + "=" + URLEncoder.encode(longi, "UTF-8")+ "&" +
                         URLEncoder.encode("f1", "UTF-8") + "=" + URLEncoder.encode(f1, "UTF-8")+ "&" +
-                        URLEncoder.encode("f2", "UTF-8") + "=" + URLEncoder.encode(f2, "UTF-8");
+                        URLEncoder.encode("f2", "UTF-8") + "=" + URLEncoder.encode(f2, "UTF-8")+"&" +
+                        URLEncoder.encode("f3", "UTF-8") + "=" + URLEncoder.encode(f3, "UTF-8")+"&" +
+                        URLEncoder.encode("f4", "UTF-8") + "=" + URLEncoder.encode(f4, "UTF-8")+"&" +
+                        URLEncoder.encode("f5", "UTF-8") + "=" + URLEncoder.encode(f5, "UTF-8");
                 bufferedWriter.write(data);
                 bufferedWriter.flush();
                 bufferedWriter.close();

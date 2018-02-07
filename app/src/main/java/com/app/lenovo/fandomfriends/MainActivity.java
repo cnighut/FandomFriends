@@ -1,7 +1,9 @@
 package com.app.lenovo.fandomfriends;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -32,20 +34,17 @@ import com.google.android.gms.nearby.connection.ConnectionResolution;
 import com.google.android.gms.nearby.connection.ConnectionsClient;
 import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
 import com.google.android.gms.nearby.connection.DiscoveryOptions;
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
-import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.nearby.connection.PayloadCallback;
-import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
-import com.google.android.gms.nearby.connection.Strategy;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
+
+import static com.google.firebase.FirebaseApp.initializeApp;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private static final Strategy STRATEGY = Strategy.P2P_CLUSTER;
+    /*private static final Strategy STRATEGY = Strategy.P2P_CLUSTER;
     private ConnectionsClient connectionsClient;
-    private String opponentName;
+    private String opponentName;*/
+
     private String profile = "Aditya";
     SharedPreferences sharedPreferences;
     String biotext = "bio";
@@ -58,11 +57,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private double currentLatitude;
     int flag=0;
     private double currentLongitude;
-    String name,lati,longi,fandom1,fandom2;
+    String name,lati,longi,fandom1,fandom2,fandom3,fandom4,fandom5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeApp(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 // The next two lines tell the new client that “this” current class will handle connection stuff
                 .addConnectionCallbacks(this)
@@ -107,9 +107,24 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
             }
         });
-        connectionsClient = Nearby.getConnectionsClient(this);
-        startAdvertising();
-        startDiscovery();
+        //connectionsClient = Nearby.getConnectionsClient(this);
+        //startAdvertising();
+        //startDiscovery();
+        Button chat=findViewById(R.id.buttonChat);
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //setContentView(R.layout.chatting);
+                try {
+                    Intent myIntent = new Intent(MainActivity.this,
+                           Chatting.class);
+                    startActivity(myIntent);
+                }catch (Exception e)
+                {
+                    Log.e("Error",e.getMessage());
+                }
+            }
+        });
     }
     public void btRegister(View view)
     {
@@ -118,14 +133,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         address = ET_ADDRESS.getText().toString();
         email = ET_EMAIL.getText().toString();
         password = ET_PASSWORD.getText().toString();*/
-        name="HighlyUniqueName";
-        fandom1="HarryPotter";
+        name="ChiragNighut";
+        fandom1="Miss AC";
         fandom2="Ben10";
+        fandom3="StarWars";
+        fandom4="GOT";
+        fandom5="Friends";
         String method = "register";
         BackgroundTask backgroundTask = new BackgroundTask(this);
-        backgroundTask.execute(method, name,lati,longi,fandom1,fandom2);
-        finish();
+        backgroundTask.execute(method, name,lati,longi,fandom1,fandom2,fandom3,fandom4,fandom5);
+        //finish();
     }
+
 
     @Override
     protected void onResume() {
@@ -267,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
 
-    private final EndpointDiscoveryCallback endpointDiscoveryCallback =
+    /*private final EndpointDiscoveryCallback endpointDiscoveryCallback =
             new EndpointDiscoveryCallback() {
                 @Override
                 public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
@@ -327,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             /*opponentEndpointId = endpointId;
             setOpponentName(opponentName);
             setStatusText(getString(R.string.status_connected));
-            setButtonState(true);*/
+            setButtonState(true);
                     } else {
                         //Log.i(TAG, "onConnectionResult: connection failed");
                     }
@@ -339,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         // Note: Advertising may fail. To keep this demo simple, we don't handle failures.
         connectionsClient.startAdvertising(
                 profile, getPackageName(), connectionLifecycleCallback, new AdvertisingOptions(STRATEGY));
-    }
+    }*/
        /* private void startAdvertising() {
         connectionsClient.startAdvertising()
           Nearby.getConnections(context).startAdvertising(

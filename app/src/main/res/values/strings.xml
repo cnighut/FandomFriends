@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">FandomFriends</string>
     <string name="welcome_ac">Welcome, Miss AC</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="verify_email">Verify your Email</string>
+    <string name="create_account">Create account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="hint_password">Password?</string>
+    <string name="hint_email">Email?</string>
+    <string name="signed_out">User Signed Out</string>
+    <string name="emailpassword_title_text">Email Password</string>
+    <string name="auth_failed">Fudge off</string>
+    <string name="emailpasswordstatus">No idea</string>
+    <string name="emailpassword_status_fmt">2</string>
+    <string name="firebase_status_fmt">3</string>
 </resources>
