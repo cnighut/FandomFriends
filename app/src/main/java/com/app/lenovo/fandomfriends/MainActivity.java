@@ -1,23 +1,22 @@
 package com.app.lenovo.fandomfriends;
 
 import android.Manifest;
-import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.support.annotation.NonNull;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,17 +25,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.AdvertisingOptions;
-import com.google.android.gms.nearby.connection.ConnectionInfo;
-import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
-import com.google.android.gms.nearby.connection.ConnectionResolution;
-import com.google.android.gms.nearby.connection.ConnectionsClient;
-import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
-import com.google.android.gms.nearby.connection.DiscoveryOptions;
-import com.google.firebase.FirebaseApp;
-
-import static com.google.firebase.FirebaseApp.initializeApp;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -46,18 +34,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private String opponentName;*/
 
     private String profile = "Aditya";
+    private float radius = 30000;
     SharedPreferences sharedPreferences;
     String biotext = "bio";
     String bioedittext;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-    private final static   int ACCESS_FINE_LOCATION = 0;
-    private  final static int ACCESS_COARSE_LOCATION = 1;
+    private final static int ACCESS_FINE_LOCATION = 0;
+    private final static int ACCESS_COARSE_LOCATION = 1;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private double currentLatitude;
-    int flag=0;
+    int flag = 0;
     private double currentLongitude;
-    String name,lati,longi,fandom1,fandom2,fandom3,fandom4,fandom5;
+    String name, lati, longi, fandom1, fandom2, fandom3, fandom4, fandom5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,40 +100,65 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         //connectionsClient = Nearby.getConnectionsClient(this);
         //startAdvertising();
         //startDiscovery();
-        Button chat=findViewById(R.id.buttonChat);
+        Button chat = findViewById(R.id.buttonChat);
         chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //setContentView(R.layout.chatting);
                 try {
                     Intent myIntent = new Intent(MainActivity.this,
-                           Chatting.class);
+                            Chatting.class);
                     startActivity(myIntent);
-                }catch (Exception e)
-                {
-                    Log.e("Error",e.getMessage());
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
                 }
             }
         });
     }
-    public void btRegister(View view)
-    {
+
+    public void btRegister(View view) {
         /*first_name =  ET_FIRST_NAME.getText().toString();
         last_name = ET_LAST_NAME.getText().toString();
         address = ET_ADDRESS.getText().toString();
         email = ET_EMAIL.getText().toString();
         password = ET_PASSWORD.getText().toString();*/
-        name="ChiragNighut";
-        fandom1="Miss AC";
-        fandom2="Ben10";
-        fandom3="StarWars";
-        fandom4="GOT";
-        fandom5="Friends";
+        name = "ChiragNighut";
+        fandom1 = "Miss AC";
+        fandom2 = "Ben10";
+        fandom3 = "StarWars";
+        fandom4 = "GOT";
+        fandom5 = "Friends";
         String method = "register";
         BackgroundTask backgroundTask = new BackgroundTask(this);
-        backgroundTask.execute(method, name,lati,longi,fandom1,fandom2,fandom3,fandom4,fandom5);
+        backgroundTask.execute(method, name, lati, longi, fandom1, fandom2, fandom3, fandom4, fandom5);
         //finish();
     }
+
+    public void btStart(View view) {
+        LocationManager lm;
+        //Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        //currentLatitude = location.getLatitude();
+        //currentLongitude = location.getLongitude();
+        lm = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Toast.makeText(this, "Radius set please", Toast.LENGTH_LONG).show();
+        Intent i = new Intent("com.app.lenovo.fandomfriends");
+        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), -1, i, 0);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        lm.addProximityAlert(currentLatitude, currentLongitude, radius, -1, pi);
+        Toast.makeText(this, "Radius set", Toast.LENGTH_LONG).show();
+
+    }
+
+
 
 
     @Override
