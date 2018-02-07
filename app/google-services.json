@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "824641546119",
+    "firebase_url": "https://fandomfriends2-2c56b.firebaseio.com",
+    "project_id": "fandomfriends2-2c56b",
+    "storage_bucket": "fandomfriends2-2c56b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824641546119:android:4938c6d08ff42418",
+        "android_client_info": {
+          "package_name": "com.app.lenovo.fandomfriends"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824641546119-729np5ch15890eh1m8ku2mvgvn6v8917.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.lenovo.fandomfriends",
+            "certificate_hash": "ecf7c61e58dd7a53d7d8a916fa35bfd50276166f"
+          }
+        },
+        {
+          "client_id": "824641546119-g2k195gfervjia9mh4dftuq179737tsc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF01x2SEEpJWM_vOdu4io6YMPKIMMdpxo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824641546119-g2k195gfervjia9mh4dftuq179737tsc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

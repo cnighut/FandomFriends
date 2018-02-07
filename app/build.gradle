@@ -34,4 +34,4 @@ dependencies {
     implementation files('libs/CircleImageView-master/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
     //implementation files('build/CircleImageView-master/CircleImageView-master/gradle/wrapper/gradle-wrapper.jar')
 }
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
