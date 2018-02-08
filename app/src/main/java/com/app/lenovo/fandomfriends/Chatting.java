@@ -17,8 +17,15 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
+import org.w3c.dom.Comment;
+
+import static android.content.ContentValues.TAG;
 
 public class Chatting extends Activity {
     private FirebaseListAdapter<ChatMessage> adapter;
@@ -54,6 +61,7 @@ public class Chatting extends Activity {
                     .show();
 
             // Load chat room contents
+
             displayChatMessages();
         }}catch (Exception e)
         {
@@ -70,7 +78,7 @@ public class Chatting extends Activity {
                 // Read the input field and push a new instance
                 // of ChatMessage to the Firebase database
                 FirebaseDatabase.getInstance()
-                        .getReference()
+                        .getReference().child("Chat")
                         .push()
                         .setValue(new ChatMessage(input.getText().toString(),
                                 FirebaseAuth.getInstance()
@@ -83,36 +91,29 @@ public class Chatting extends Activity {
             }
         });
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
     private void displayChatMessages() {
-        /*ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
 
-        adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
-            @Override
-            protected void populateView(View v, ChatMessage model, int position) {
-                // Get references to the views of message.xml
-                TextView messageText = (TextView)v.findViewById(R.id.message_text);
-                TextView messageUser = (TextView)v.findViewById(R.id.message_user);
-                TextView messageTime = (TextView)v.findViewById(R.id.message_time);
-
-                // Set their text
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-
-                // Format the date before showing it
-                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-                        model.getMessageTime()));
-            }
-        };
-
-        listOfMessages.setAdapter(adapter);*/
         ListView listOfMessages = (ListView)findViewById(R.id.list_of_messages);
-        Query query = FirebaseDatabase.getInstance().getReference();
+        Query query = FirebaseDatabase.getInstance().getReference().child("Chat");
         FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>()
                 .setQuery(query, ChatMessage.class)
                 .setLayout(R.layout.message)
                 .build();
         //Finally you pass them to the constructor here:
+
+
         adapter = new FirebaseListAdapter<ChatMessage>(options){
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
@@ -125,6 +126,7 @@ public class Chatting extends Activity {
                 // Format the date before showing it
                 messageUser.setText(model.getMessageUser());
                 messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.getMessageTime()));
+                //Log.e("Data received",model.getMessageText()+model.getMessageUser()+model.getMessageTime());
             }
         };
         listOfMessages.setAdapter(adapter);
