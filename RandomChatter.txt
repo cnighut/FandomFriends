@@ -1,3 +1,4 @@
 Personal branch. Want to see if it really works XD
 Okay, it does work. Chirag, I give in...Linux sometimes is better :)
 But remember to pull this file first into Android Studio :)
+Oh, come on Database!
