@@ -41,4 +41,5 @@ public class ChatMessage {
     public void setMessageTime(long messageTime) {
         this.messageTime = messageTime;
     }
+    /*This is a useless commit message. Just showing the fact that I can commit still, ugh. Why doesn't gpg sign work? :(*/
 }
