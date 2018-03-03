@@ -415,10 +415,10 @@
                 android:text="Chat"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.242"
+                app:layout_constraintHorizontal_bias="0.128"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.915" />
+                app:layout_constraintVertical_bias="0.893" />
 
             <Button
                 android:id="@+id/button2"
@@ -451,6 +451,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/horizontalscroll2"
                 app:layout_constraintVertical_bias="0.867" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:text="OptimallyFindFriends"
+                android:onClick="StartIt"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/button3"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <!--<Button
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="51dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="ReallySilly"
+                android:onClick="startIt2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageButton2" />-->
 
         </android.support.constraint.ConstraintLayout>
 

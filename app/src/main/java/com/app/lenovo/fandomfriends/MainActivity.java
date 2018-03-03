@@ -117,7 +117,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
     }
+    public void StartIt(View view)
+    {
+        String method = "find_friends";
+        BackgroundTask backgroundTask = new BackgroundTask(this);
+        backgroundTask.execute(method);
 
+    }
+    public void startIt2(View view)
+    {
+        String method="load";
+        BackgroundTask backgroundTask1=new BackgroundTask(this);
+        backgroundTask1.execute(method);
+    }
     public void btRegister(View view) {
         /*first_name =  ET_FIRST_NAME.getText().toString();
         last_name = ET_LAST_NAME.getText().toString();
@@ -133,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         String method = "register";
         BackgroundTask backgroundTask = new BackgroundTask(this);
         backgroundTask.execute(method, name, lati, longi, fandom1, fandom2, fandom3, fandom4, fandom5);
+
         //finish();
     }
 

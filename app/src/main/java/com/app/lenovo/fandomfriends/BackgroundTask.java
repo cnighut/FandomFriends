@@ -3,10 +3,14 @@ package com.app.lenovo.fandomfriends;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,6 +39,7 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         String reg_url = "http://almat.almafiesta.com/Kryptex5.0/Androidlogin.php";
+        String find_friends_url="http://almat.almafiesta.com/Kryptex5.0/ldr.php";
         String login_url = "http://192.168.0.10/webapp/login.php";
         String method = params [0];
         if (method.equals("register") ){
@@ -112,6 +117,81 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
         }
+        else if(method.equals("find_friends"))
+        {
+            try {
+                URL url = new URL(find_friends_url);
+                HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+                urlconnection.setRequestProperty("Accept-Charset", "UTF-8");
+                urlconnection.setConnectTimeout(15000);
+                urlconnection.setDoOutput(true);
+                urlconnection.setRequestMethod("GET");
+                urlconnection.connect();
+                int response = urlconnection.getResponseCode();
+                final String DEBUG_TAG = "DEBUG LOG";
+                Log.d(DEBUG_TAG, "Response code: " + response);
+                Log.d(DEBUG_TAG, "Script was running: " + (response == 200));
+                urlconnection.disconnect();
+            }
+            catch(MalformedURLException e){
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            return "find_friends";
+        }
+        else if(method.equals("load")) {
+
+            try {
+                URL url = new URL("http://almat.almafiesta.com/Kryptex5.0/profiles.json");
+
+                File root = android.os.Environment.getExternalStorageDirectory();
+                File dir = new File(root.getAbsolutePath() + "mnt/sdcard/profile");
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                    //Toast.makeText(ctx, "Made a directory", Toast.LENGTH_LONG).show();
+                }
+                String fileName = "profiles.json";
+                File file = new File(root.getAbsolutePath() + "mnt/sdcard/profile/profiles.json");
+                HttpURLConnection urlconnection = (HttpURLConnection) url.openConnection();
+                urlconnection.setReadTimeout(15000);
+                urlconnection.setConnectTimeout(15000);
+
+                InputStream inputStream = urlconnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader (new InputStreamReader(inputStream,"iso-8859-1"));
+                FileOutputStream fos = new FileOutputStream( file);
+                BufferedWriter writer=new BufferedWriter(new OutputStreamWriter(fos,"iso-8859-1"));
+                //String response = "";
+                String line = "";
+                int x=1;
+                while ((line = bufferedReader.readLine())!=null)
+                {
+                    //response+= line;
+                    if(x==1)
+                    //Toast.makeText(ctx, "Read", Toast.LENGTH_LONG).show();
+                    writer.write(line);
+                    if(x==1)
+                    //Toast.makeText(ctx, "Wrote", Toast.LENGTH_LONG).show();
+                    x++;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                writer.flush();
+                writer.close();
+                urlconnection.disconnect();
+            }catch (MalformedURLException e)
+            {
+                Log.e("Error",e.getMessage());
+            }
+            catch (IOException e)
+            {
+                Log.e("Error 2", e.getMessage());
+            }
+
+            return "All cool";
+        }
         return null;
     }
 
@@ -122,6 +202,9 @@ public class BackgroundTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
+        if(result.equals("find_friends")) {
+
+        }
         if(result.equals("Registration Has Been Successful."))
         {
             Toast.makeText(ctx, result, Toast.LENGTH_LONG).show();

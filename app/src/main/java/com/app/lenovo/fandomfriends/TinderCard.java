@@ -16,10 +16,6 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeInState;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 
-/**
- * Created by Lenovo on 02-03-2018.
- */
-
 @Layout(R.layout.tinder_card_view)
 public class TinderCard {
 
