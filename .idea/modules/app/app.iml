@@ -17,7 +17,7 @@
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
         <option name="RES_FOLDER_RELATIVE_PATH" value="/src/main/res" />
-        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../app/src/main/res" />
+        <option name="RES_FOLDERS_RELATIVE_PATH" value="file://$MODULE_DIR$/../../../app/src/main/res;file://$MODULE_DIR$/../../../app/src/main/res/drawable" />
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/src/main/assets" />
       </configuration>
     </facet>
@@ -65,6 +65,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/testDebug/shaders" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/res/drawable" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/assets" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../../app/src/main/aidl" isTestSource="false" />
@@ -99,6 +100,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/instant-run-support" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/javaPrecompile" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/jniLibs" />
+      <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/prebuild" />
       <excludeFolder url="file://$MODULE_DIR$/../../../app/build/intermediates/reload-dex" />
@@ -117,6 +119,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.android.support:animated-vector-drawable-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-nearby-license-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.code.gson:gson:2.8.0@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-auth-11.8.0" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-iid-11.8.0" level="project" />
     <orderEntry type="library" name="de.hdodenhof:circleimageview-2.2.0" level="project" />
@@ -170,6 +173,7 @@
     <orderEntry type="library" name="com.android.support:design-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.firebase:firebase-iid-license-11.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="junit:junit:4.12@jar" level="project" />
+    <orderEntry type="library" name="com.mindorks:placeholderview-0.7.1" level="project" />
     <orderEntry type="library" name="com.firebaseui:firebase-ui-3.2.1" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-auth-api-phone-11.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="com.android.support.test.espresso:espresso-core-3.0.1" level="project" />

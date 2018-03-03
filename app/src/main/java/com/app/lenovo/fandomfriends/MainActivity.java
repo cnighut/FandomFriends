@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -71,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         EditText bio = (EditText) findViewById(R.id.Bio);
         bioedittext = sharedPreferences.getString("bio", "Enter your bio here");
         bio.setText(bioedittext);
-        final ImageButton edit = (ImageButton) findViewById(R.id.imageButton);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        final ImageButton edit =  findViewById(R.id.imageButton);
         edit.setOnClickListener(new View.OnClickListener() {
 
             EditText bio = (EditText) findViewById(R.id.Bio);
@@ -298,6 +300,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
     }
+
+    public void FindFriends(View view) {
+
+
+                try {
+                    Intent myIntent = new Intent(MainActivity.this,
+                            FindFriends.class);
+                    startActivity(myIntent);
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                }
+            }
+
+
+
 
 
 

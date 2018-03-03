@@ -17,17 +17,12 @@ import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import org.w3c.dom.Comment;
-
-import static android.content.ContentValues.TAG;
 
 public class Chatting extends Activity {
+
     private FirebaseListAdapter<ChatMessage> adapter;
     private static final int SIGN_IN_REQUEST_CODE = 200;
     private FirebaseAuth mAuth;
@@ -37,10 +32,10 @@ public class Chatting extends Activity {
         // Get the view from new_activity.xml
         setContentView(R.layout.chatting);
 
-// ...
 
         try{
             FirebaseApp.initializeApp(this);
+
             mAuth = FirebaseAuth.getInstance();
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
@@ -118,6 +113,7 @@ public class Chatting extends Activity {
             @Override
             protected void populateView(View v, ChatMessage model, int position) {
                 // Get references to the views of message.xml
+                adapter.notifyDataSetChanged();
                 TextView messageText = (TextView)v.findViewById(R.id.message_text);
                 TextView messageTime = (TextView)v.findViewById(R.id.message_time);
                 TextView messageUser = (TextView)v.findViewById(R.id.message_user);

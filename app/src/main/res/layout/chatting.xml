@@ -29,6 +29,8 @@
             android:layout_height="wrap_content"
             android:hint="Input"
             android:id="@+id/input"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
             />
     </android.support.design.widget.TextInputLayout>
 
@@ -41,6 +43,8 @@
         android:dividerHeight="16dp"
         android:divider="@android:color/transparent"
         android:id="@+id/list_of_messages"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
         android:layout_marginBottom="16dp"/>
 
 </android.widget.RelativeLayout>
