@@ -30,12 +30,9 @@ import com.google.firebase.database.FirebaseDatabase;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    /*private static final Strategy STRATEGY = Strategy.P2P_CLUSTER;
-    private ConnectionsClient connectionsClient;
-    private String opponentName;*/
 
     private String profile = "Aditya";
-    private float radius = 30000;
+    private float radius = 2;
     SharedPreferences sharedPreferences;
     String biotext = "bio";
     String bioedittext;
@@ -326,104 +323,4 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 }
             }
 
-
-
-
-
-
-    /*private final EndpointDiscoveryCallback endpointDiscoveryCallback =
-            new EndpointDiscoveryCallback() {
-                @Override
-                public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
-                    //Log.i(TAG, "onEndpointFound: endpoint found, connecting");
-                    connectionsClient.requestConnection(profile, endpointId, connectionLifecycleCallback);
-                }
-
-                @Override
-                public void onEndpointLost(String endpointId) {}
-            };
-
-    private void startDiscovery() {
-        // Note: Discovery may fail. To keep this demo simple, we don't handle failures.
-        connectionsClient.startDiscovery(
-                getPackageName(), endpointDiscoveryCallback, new DiscoveryOptions(STRATEGY));
-
-    }
-    private final PayloadCallback payloadCallback =
-            new PayloadCallback() {
-                @Override
-                public void onPayloadReceived(String endpointId, Payload payload) {
-                  //opponentChoice = GameChoice.valueOf(new String(payload.asBytes(), UTF_8));
-                    EditText bio = (EditText) findViewById(R.id.Bio);
-                    bio.setText(new String(payload.asBytes()));
-                }
-
-                @Override
-                public void onPayloadTransferUpdate(String endpointId, PayloadTransferUpdate update) {
-                    if (update.getStatus() == PayloadTransferUpdate.Status.SUCCESS ) {
-                        //finishRound();
-                    }
-                }
-            };
-
-    private final ConnectionLifecycleCallback connectionLifecycleCallback =
-            new ConnectionLifecycleCallback() {
-                @Override
-                public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                   // Log.i(TAG, "onConnectionInitiated: accepting connection");
-                    connectionsClient.acceptConnection(endpointId, payloadCallback);
-                    Toast.makeText(getApplicationContext(), "Found you!", Toast.LENGTH_LONG).show();
-                    opponentName = connectionInfo.getEndpointName();
-                }
-                @Override
-                public void onDisconnected(String endpointId) {
-                    //Log.i(TAG, "onDisconnected: disconnected from the opponent");
-                    //resetGame();
-                }
-                public void onConnectionResult(String endpointId, ConnectionResolution result) {
-                    if (result.getStatus().isSuccess()) {
-                        //Log.i(TAG, "onConnectionResult: connection successful");
-
-                        connectionsClient.sendPayload(endpointId,Payload.fromBytes("Hi There".getBytes()));
-                        connectionsClient.stopDiscovery();
-                        connectionsClient.stopAdvertising();
-
-            /*opponentEndpointId = endpointId;
-            setOpponentName(opponentName);
-            setStatusText(getString(R.string.status_connected));
-            setButtonState(true);
-                    } else {
-                        //Log.i(TAG, "onConnectionResult: connection failed");
-                    }
-                }
-            };
-
-
-    private void startAdvertising() {
-        // Note: Advertising may fail. To keep this demo simple, we don't handle failures.
-        connectionsClient.startAdvertising(
-                profile, getPackageName(), connectionLifecycleCallback, new AdvertisingOptions(STRATEGY));
-    }*/
-       /* private void startAdvertising() {
-        connectionsClient.startAdvertising()
-          Nearby.getConnections(context).startAdvertising(
-                  profile,
-                 "com.app.lenovo.fandomfriends",
-                  mConnectionLifecycleCallback,
-                  new AdvertisingOptions(STRATEGY))
-              .addOnSuccessListener(
-                new OnSuccessListener<Void>() {
-                  @Override
-                  public void onSuccess(Void unusedResult) {
-                    // We're advertising!
-                  }
-                })
-              .addOnFailureListener(
-                new OnFailureListener() {
-                  @Override
-                  public void onFailure(@NonNull Exception e) {
-                    // We were unable to start advertising.
-                  }
-                });
-          }*/
 }

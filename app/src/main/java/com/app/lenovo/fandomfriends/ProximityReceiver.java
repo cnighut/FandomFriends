@@ -7,9 +7,6 @@ import android.location.LocationManager;
 import android.widget.Toast;
 
 
-/**
- * Created by qawbecrdteyf on 7/2/18.
- */
 
 public class ProximityReceiver extends BroadcastReceiver {
 
@@ -22,7 +19,7 @@ public class ProximityReceiver extends BroadcastReceiver {
         // Key for determining whether user is leaving or entering
 
         boolean state=arg1.getBooleanExtra(k, false);
-        //Gives whether the user is entering or leaving in boolean form
+        //Gives whether the user is entering or leaving in boolean form-
 
         if(state){
             // Call the Notification Service or anything else that you would like to do here
