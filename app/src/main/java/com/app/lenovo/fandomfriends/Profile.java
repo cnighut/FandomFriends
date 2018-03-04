@@ -9,28 +9,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class Profile {
 
-    @SerializedName("name")
+    @SerializedName("Username")
     @Expose
-    private String name;
+    private String Username;
 
     @SerializedName("url")
     @Expose
     private String imageUrl;
 
-    @SerializedName("age")
+    @SerializedName("Password")
     @Expose
-    private Integer age;
+    private String Password;
 
-    @SerializedName("location")
+    @SerializedName("Level")
     @Expose
-    private String location;
+    private String Level;
 
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return Username;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String Username) {
+        this.Username = Username;
     }
 
     public String getImageUrl() {
@@ -41,19 +41,19 @@ public class Profile {
         this.imageUrl = imageUrl;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getPassword() {
+        return Password;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setPassword(String Password) {
+        this.Password = Password;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLevel() {
+        return Level;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLevel(String Level) {
+        this.Level = Level;
     }
 }
