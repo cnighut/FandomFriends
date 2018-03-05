@@ -3,6 +3,7 @@ package com.app.lenovo.fandomfriends;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.mindorks.placeholderview.SwipeDecor;
@@ -31,7 +32,13 @@ public class FindFriends extends AppCompatActivity {
 
 
         for(Profile profile : Utils.loadProfiles(this.getApplicationContext())){
-            mSwipeView.addView(new TinderCard(mContext, profile, mSwipeView));
+            try {
+                mSwipeView.addView(new TinderCard(mContext, profile, mSwipeView));
+            }catch(Exception e)
+            {
+                Log.e("Error","Come on");
+            }
+
         }
 
         findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
