@@ -45,7 +45,9 @@ public class Chatting extends Activity {
                             .build(),
                     SIGN_IN_REQUEST_CODE
             );
+            //adapter.startListening();
         } else {
+            //adapter.startListening();
             // User is already signed in. Therefore, display
             // a welcome Toast
             Toast.makeText(this,
@@ -89,13 +91,15 @@ public class Chatting extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        adapter.startListening();
+        if(FirebaseAuth.getInstance().getCurrentUser() !=null)
+            adapter.startListening();
     }
 
 
     @Override
     protected void onStop() {
         super.onStop();
+        if(FirebaseAuth.getInstance().getCurrentUser() !=null)
         adapter.stopListening();
     }
     private void displayChatMessages() {

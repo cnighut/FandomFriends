@@ -20,11 +20,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -45,11 +48,39 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     int flag = 0;
     private double currentLongitude;
     String name, lati, longi, fandom1, fandom2, fandom3, fandom4, fandom5;
-
+    private static final int SIGN_IN_REQUEST_CODE = 200;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        try{
+            FirebaseApp.initializeApp(this);
+
+            mAuth = FirebaseAuth.getInstance();
+            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+                // Start sign in/sign up activity
+                startActivityForResult(
+                        AuthUI.getInstance()
+                                .createSignInIntentBuilder()
+                                .build(),
+                        SIGN_IN_REQUEST_CODE
+                );
+                //setContentView(R.layout.activity_main);
+            } else {
+
+                Toast.makeText(this,
+                        "Welcome " + FirebaseAuth.getInstance()
+                                .getCurrentUser()
+                                .getDisplayName(),
+                        Toast.LENGTH_LONG)
+                        .show();
+                //setContentView(R.layout.activity_main);
+            }}catch (Exception e)
+        {
+            Log.e("Error",e.getMessage());
+        }
+                setContentView(R.layout.activity_main);
+
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 // The next two lines tell the new client that “this” current class will handle connection stuff
