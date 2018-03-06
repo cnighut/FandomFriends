@@ -38,8 +38,7 @@ public class Utils {
     }
 
     private static String loadJSONFromAsset(Context context, String jsonFileName) {
-        String json = null;
-        InputStream is=null;
+       
         /*try {
             AssetManager manager = context.getAssets();
             Log.d(TAG,"path "+jsonFileName);

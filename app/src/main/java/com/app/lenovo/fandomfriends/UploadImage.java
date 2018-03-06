@@ -37,7 +37,12 @@ class UploadImage extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String s) {
-        super.onPostExecute(s);
+        try {
+            super.onPostExecute(s);
+        }catch (NullPointerException e)
+        {
+            Log.e("Oops","Null here");
+        }
         //loading.dismiss();
         Toast.makeText(ctx,s,Toast.LENGTH_LONG).show();
     }
@@ -55,7 +60,7 @@ class UploadImage extends AsyncTask<String,Void,String> {
 
         try {
                 URL url;
-                String reg_url = "http://almat.almafiesta.com/Kryptex5.0/ImgUpload.php";
+                String reg_url = "http://almat.almafiesta.com/Kryptex5.0/upload.php";
                 url = new URL(reg_url);
             HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
@@ -64,6 +69,7 @@ class UploadImage extends AsyncTask<String,Void,String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(OS, "UTF-8"));
                 String imgstring = params[0];
                 String name=params[1];
+                Log.d("Huhu2",imgstring);
             String data = URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8") + "&" +
                     URLEncoder.encode("imgstring", "UTF-8") + "=" + URLEncoder.encode(imgstring, "UTF-8");
                 bufferedWriter.write(data);

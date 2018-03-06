@@ -26,7 +26,7 @@ public class Profile {
     private String Level;
 
     public String getUserName() {
-        return Username;
+        return Username ;
     }
 
     public void setUserName(String Username) {

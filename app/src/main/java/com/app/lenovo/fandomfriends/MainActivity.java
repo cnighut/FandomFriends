@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 CircleImageView img = findViewById(R.id.Profilepic);
                 img.setImageBitmap(bitmap);
                 String img_string = getStringImage(bitmap);
+                Log.d("Huhu",img_string);
                 UploadImage uploadImage = new UploadImage(this);
                 uploadImage.execute(img_string, "ChiragNighut");
 
