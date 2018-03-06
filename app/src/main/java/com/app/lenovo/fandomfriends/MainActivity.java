@@ -10,9 +10,11 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +25,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private String profile = "Aditya";
     private float radius = 2;
     public static final int GET_FROM_GALLERY = 3;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreferences,sharedPreferencesProfileImage;
     String biotext = "bio";
     String bioedittext;
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
@@ -64,39 +68,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private double currentLongitude;
     String name, lati, longi, fandom1, fandom2, fandom3, fandom4, fandom5;
     private static final int SIGN_IN_REQUEST_CODE = 200;
+    Location location=null;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        try{
-            FirebaseApp.initializeApp(this);
-
-            mAuth = FirebaseAuth.getInstance();
-            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-                // Start sign in/sign up activity
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .build(),
-                        SIGN_IN_REQUEST_CODE
-                );
-                //setContentView(R.layout.activity_main);
-            } else {
-
-                Toast.makeText(this,
-                        "Welcome " + FirebaseAuth.getInstance()
-                                .getCurrentUser()
-                                .getDisplayName(),
-                        Toast.LENGTH_LONG)
-                        .show();
-                //setContentView(R.layout.activity_main);
-            }}catch (Exception e)
-        {
-            Log.e("Error",e.getMessage());
-        }
-                setContentView(R.layout.activity_main);
-
-
+        //setContentView(R.layout.dummy);
+        resetLayout();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 // The next two lines tell the new client that “this” current class will handle connection stuff
                 .addConnectionCallbacks(this)
@@ -110,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)        // 10 seconds, in milliseconds
                 .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+    }
+    public void resetLayout()
+    {
+        setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences(biotext, Context.MODE_PRIVATE);
         EditText bio = (EditText) findViewById(R.id.Bio);
@@ -170,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             }
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -184,10 +165,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
                 CircleImageView img = findViewById(R.id.Profilepic);
                 img.setImageBitmap(bitmap);
+
                 String img_string = getStringImage(bitmap);
                 Log.d("Huhu",img_string);
                 UploadImage uploadImage = new UploadImage(this);
-                uploadImage.execute(img_string, "ChiragNighut");
+                uploadImage.execute(img_string, FirebaseAuth.getInstance().getCurrentUser().getDisplayName().replaceAll("\\s", "").toLowerCase());
 
             } catch (FileNotFoundException e) {
 
@@ -213,12 +195,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         backgroundTask.execute(method);
 
     }
-    public void startIt2(View view)
-    {
-        String method="load";
-        BackgroundTask backgroundTask1=new BackgroundTask(this);
-        backgroundTask1.execute(method);
-    }
+
     public void btRegister(View view) {
         /*first_name =  ET_FIRST_NAME.getText().toString();
         last_name = ET_LAST_NAME.getText().toString();
@@ -239,27 +216,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     public void btStart(View view) {
-        LocationManager lm;
-        //Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        //currentLatitude = location.getLatitude();
-        //currentLongitude = location.getLongitude();
-        lm = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Toast.makeText(this, "Radius set please", Toast.LENGTH_LONG).show();
-        Intent i = new Intent("com.app.lenovo.fandomfriends");
-        PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), -1, i, 0);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        lm.addProximityAlert(currentLatitude, currentLongitude, radius, -1, pi);
-        Toast.makeText(this, "Radius set", Toast.LENGTH_LONG).show();
 
+        DownloadImageTask dit=new DownloadImageTask((CircleImageView) findViewById(R.id.Profilepic));
+        dit.execute("http://almat.almafiesta.com/images/ChiragNighut.jpg");
     }
 
 
@@ -285,32 +244,27 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
+    public void onStart()
+    {
+        super.onStart();
+        /*DownloadImageTask dit = new DownloadImageTask((CircleImageView) findViewById(R.id.Profilepic));
+        dit.execute("http://almat.almafiesta.com/images/"+FirebaseAuth.getInstance()
+                .getCurrentUser()
+                .getDisplayName().replaceAll("\\s", "").toLowerCase()+".jpg");*/
+    }
+    @Override
     public void onConnected(Bundle bundle) {
-        //Toast.makeText(this, "Tried to connect", Toast.LENGTH_LONG).show();
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                Toast.makeText(this, "Requesting...", Toast.LENGTH_LONG).show();
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        ACCESS_FINE_LOCATION);
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        ACCESS_COARSE_LOCATION);
-
-                //return;
-            }
-            /*if(flag==0) {
-                Toast.makeText(this, "Flag is 0...aborting", Toast.LENGTH_LONG).show();
-                return;
-            }*/
-            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        //Toast.makeText(this, "Connected", Toast.LENGTH_LONG).show();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Requesting...", Toast.LENGTH_LONG).show();
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_COARSE_LOCATION);
+        }
+        else {
+            location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (location == null) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
 
@@ -318,12 +272,42 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 //If everything went fine lets get latitude and longitude
                 currentLatitude = location.getLatitude();
                 currentLongitude = location.getLongitude();
-                lati=currentLatitude+"";
-                longi=currentLongitude+"";
+                lati = currentLatitude + "";
+                longi = currentLongitude + "";
                 //Toast.makeText(this, currentLatitude + " WORKS " + currentLongitude + "", Toast.LENGTH_LONG).show();
-                TextView tv=findViewById(R.id.FandomsFollowed);
-                tv.setText(currentLatitude+" , "+currentLongitude);
+                //TextView tv=findViewById(R.id.FandomsFollowed);
+                //tv.setText(currentLatitude+" , "+currentLongitude);
             }
+            try {
+                FirebaseApp.initializeApp(this);
+                mAuth = FirebaseAuth.getInstance();
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    // Start sign in/sign up activity
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .build(),
+                            SIGN_IN_REQUEST_CODE
+                    );
+                    //setContentView(R.layout.activity_main);
+                } else {
+
+                    Toast.makeText(this,
+                            "Welcome " + FirebaseAuth.getInstance()
+                                    .getCurrentUser()
+                                    .getDisplayName(),
+                            Toast.LENGTH_LONG)
+                            .show();
+                    DownloadImageTask dit = new DownloadImageTask((CircleImageView) findViewById(R.id.Profilepic));
+                    dit.execute("http://almat.almafiesta.com/images/"+FirebaseAuth.getInstance()
+                            .getCurrentUser()
+                            .getDisplayName().replaceAll("\\s", "").toLowerCase()+".jpg");
+
+                }
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+            }
+        }
         }
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -333,34 +317,21 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
                     flag++;
-
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    //finish();
                 }
-                //return;
             }
 
             case ACCESS_FINE_LOCATION:
             {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    resetLayout();
 
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    flag++;
                 } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+                    //finish();
                 }
-                //return;
             }
         }
     }
@@ -414,5 +385,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     Log.e("Error", e.getMessage());
                 }
             }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        CircleImageView bmImage;
+
+        public DownloadImageTask(CircleImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            if(result==null)
+                bmImage.setImageResource(R.drawable.nrg);
+            else
+                bmImage.setImageBitmap(result);
+            //return result;
+
+        }
+    }
 
 }
